@@ -185,7 +185,6 @@ fn main() {
             panic!("Error: Cannot print to the terminal");
         }
 
-        // TODO: don't allow going in the opposite direction
         match window.poll_events() {
             Some(key) => match key {
                 yacurses::CursesKey::ArrowUp => match snake_direction {
