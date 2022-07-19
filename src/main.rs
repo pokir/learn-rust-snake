@@ -183,7 +183,8 @@ fn main() {
         let result = window.print_str(&format_grid(&grid));
 
         if result.is_err() {
-            panic!("Error: Cannot print to the terminal using curses");
+            // TODO: fix this (it is err even though it works)
+            //panic!("Error: Cannot print to the terminal using curses");
         }
 
         match window.poll_events() {
