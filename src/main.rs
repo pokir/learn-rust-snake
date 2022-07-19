@@ -1,5 +1,11 @@
 use rand::Rng;
 
+const START_SNAKE_SIZE: usize = 5;
+
+const START_SLEEP_TIME: i32 = 150;
+const MINIMUM_SLEEP_TIME: i32 = 50;
+const SLEEP_DECREASE_PER_FOOD: i32 = 3;
+
 #[derive(Clone)]
 enum Cell {
     Empty,
@@ -63,7 +69,7 @@ fn create_snake(grid: &mut Vec<Vec<Cell>>) -> (Vec<(usize, usize)>, Direction) {
 
     let mut snake = Vec::new();
 
-    for i in 0..5 {
+    for i in 0..START_SNAKE_SIZE {
         snake.push((i + grid[0].len() / 2, grid.len() / 2));
     }
 
@@ -221,6 +227,10 @@ fn main() {
             _ => {}
         }
 
-        std::thread::sleep(std::time::Duration::from_millis(150));
+        let sleep_decrease = (snake.len() - START_SNAKE_SIZE) as i32 * SLEEP_DECREASE_PER_FOOD;
+
+        let sleep_time = std::cmp::max(MINIMUM_SLEEP_TIME, START_SLEEP_TIME - sleep_decrease);
+
+        std::thread::sleep(std::time::Duration::from_millis(sleep_time as u64));
     }
 }
