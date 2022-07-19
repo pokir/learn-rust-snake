@@ -8,6 +8,7 @@ enum Cell {
     Food,
 }
 
+#[derive(PartialEq)]
 enum Direction {
     Up,
     Down,
@@ -186,26 +187,24 @@ fn main() {
         }
 
         match window.poll_events() {
-            Some(key) => match key {
-                yacurses::CursesKey::ArrowUp => match snake_direction {
-                    Direction::Down => {}
-                    _ => snake_direction = Direction::Up,
-                },
-                yacurses::CursesKey::ArrowDown => match snake_direction {
-                    Direction::Up => {}
-                    _ => snake_direction = Direction::Down,
-                },
-                yacurses::CursesKey::ArrowLeft => match snake_direction {
-                    Direction::Right => {}
-                    _ => snake_direction = Direction::Left,
-                },
-                yacurses::CursesKey::ArrowRight => match snake_direction {
-                    Direction::Left => {}
-                    _ => snake_direction = Direction::Right,
-                },
-                _ => {}
-            },
-            None => {}
+            Some(key) => {
+                snake_direction = match key {
+                    yacurses::CursesKey::ArrowUp if snake_direction != Direction::Down => {
+                        Direction::Up
+                    }
+                    yacurses::CursesKey::ArrowDown if snake_direction != Direction::Up => {
+                        Direction::Down
+                    }
+                    yacurses::CursesKey::ArrowLeft if snake_direction != Direction::Right => {
+                        Direction::Left
+                    }
+                    yacurses::CursesKey::ArrowRight if snake_direction != Direction::Left => {
+                        Direction::Right
+                    }
+                    _ => snake_direction,
+                }
+            }
+            None => { /* do nothing if no key pressed */ }
         }
 
         let snake_event = move_snake(&mut grid, &mut snake, &snake_direction, grow);
