@@ -176,6 +176,7 @@ fn main() {
     let mut grow = false;
 
     loop {
+        // display the game
         let result = window.move_cursor(yacurses::Position { x: 0, y: 0 });
 
         if result.is_err() {
@@ -192,6 +193,8 @@ fn main() {
             // TODO: fix this (it is err even though it works)
             //panic!("Error: Cannot print to the terminal using curses");
         }
+
+        // TODO: display the score
 
         match window.poll_events() {
             Some(key) => {
